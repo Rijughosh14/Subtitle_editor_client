@@ -18,22 +18,12 @@ const SubtitleList=()=>{
   const [DeleteButtonIndex,SetDeleteButtonIndex]=useState(-1)
 
   const dispatch=useDispatch()
-
-  
-  const Subtitleslinkdata=useSelector((state)=>{
-    const linkdata=state?.subtitles_VTT?.SubtitleLink
-    return linkdata
-  })
   
   const subtitlesData=useSelector((state)=>{
     const data=state?.subtitles_VTT?.SubtitleVtt  
     return data
   })
-  
-  const GetParesedVtt=useCallback(async(value)=>{
-  const parsedVtt=await ParsingVttContent(value)
-  dispatch(SetVTT({parsedVtt}))
-  },[Subtitleslinkdata])
+
 
   const handleSelectSubtitle=(d)=>{
     dispatch(SelectSubtitle({d}))
@@ -57,13 +47,10 @@ const SubtitleList=()=>{
     if(subtitlesData.length>0){
       SetcaptionList(subtitlesData)
     }
-    else if(Subtitleslinkdata!==''){
-      GetParesedVtt(Subtitleslinkdata)
-    }
     else{
       SetcaptionList([])
     }
-  },[Subtitleslinkdata,subtitlesData])
+  },[subtitlesData])
 
   return(
     <div className='flex flex-col h-full '>
@@ -121,10 +108,20 @@ const StoredVideos=()=>{
     SetstoredVideos(response.data)
   }
 
+  const GetParesedVtt=async(value)=>{
+    const parsedVtt=await ParsingVttContent(value)
+    dispatch(SetVTT({parsedVtt}))
+    }
+
+
   const handleSelectedVideo=(Vlink,Slink)=>{
     dispatch(AddVideo({value:Vlink}))
+   if(Slink!==''&&Slink!==null){
+      GetParesedVtt(Slink)
+    }
     dispatch(AddVttLink({value:Slink}))
   }
+
 
   useEffect(()=>{
     getdata()

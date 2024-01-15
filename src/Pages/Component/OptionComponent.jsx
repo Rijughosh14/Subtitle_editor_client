@@ -29,7 +29,8 @@ useEffect(()=>{
     return (
         <div className='flex flex-row gap-4 justify-between items-center'>
             {/* edit cancel and upload button */}
-            {(!currentstate&&currentvideo)&&<div className='flex flex-row flex-grow justify-between gap-4'>
+            {(!currentstate&&currentvideo)&&
+            <div className='flex flex-row flex-grow justify-between gap-4'>
                 <div>
                  <button className='h-fit w-fit px-4 py-2 font-serif rounded-md bg-blue-400'
                     onClick={()=>dispatch(eDITOR({value:true}))}

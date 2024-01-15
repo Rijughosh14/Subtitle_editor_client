@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import ReactPlayer from 'react-player'
 import { useDispatch, useSelector } from 'react-redux'
+import { RemoveSubtitle } from '../../feature/Subtitles/SubtitleSlice';
 import { AddVideo } from '../../feature/Video/VideoSlice';
+
 
 
 
@@ -63,11 +65,13 @@ const VideoComponent = ({handleVideoFileData}) => {
     const file = event.target.files[0];
     handleVideoFileData(file)
     dispatch(AddVideo({value:URL.createObjectURL(file)}));
+    dispatch(RemoveSubtitle({}));
   }
 
 
   return (
-    !videoFile ? <div className='flex h-full '>
+    !videoFile ?
+     <div className='flex h-full '>
       <div className='m-auto flex flex-row gap-2 items-center'>
         <label htmlFor="videoFile" className='hover:cursor-pointer px-5 py-4 rounded-md shadow-lg bg-gray-500 hover:px-6 hover:py-5 font-serif text-white hover:text-lg '>
           <input id='videoFile' type="file" hidden accept={"video/*"} onChange={(event) => HandleVideoSelect(event)} />

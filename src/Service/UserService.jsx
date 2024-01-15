@@ -23,15 +23,14 @@ import { WebVTTParser } from 'webvtt-parser';
 }
 
 //uploading vttfile
-   const Vtt_upload = (file,name) => {
+   const Vtt_upload = (file) => {
     return new Promise(async (resolve, reject) => {
 
         if(file.length<1) return resolve('')
         try {
 
             const res=await axios.post('/vttUpload',{
-                file:file,
-                name:name
+                file:file
             })
             return resolve(res.data)
         } catch (error) {
@@ -43,6 +42,7 @@ import { WebVTTParser } from 'webvtt-parser';
   //uploading video and vtt file reference in DB
   export   const upload = (videofile,vttfile) => {
     return new Promise(async (resolve, reject) => {
+        console.log(videofile)
         try {
           const VideoResponse=await Video_upload(videofile)
           const VttResponse=await Vtt_upload(vttfile,videofile.originalname)
