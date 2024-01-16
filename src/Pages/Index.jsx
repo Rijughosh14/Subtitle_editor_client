@@ -12,6 +12,7 @@ import { toast } from 'react-toastify';
 
 const Index = () => {
     const [VideoFileData, SetVideoFileData] = useState(null)
+    const [loading,Setloading]=useState(false)
 
     const vttfile = useSelector((state) => {
         const data = state?.subtitles_VTT?.SubtitleVtt
@@ -29,30 +30,64 @@ const Index = () => {
     }
 
     const HandleUploadVideo = async () => {
+        
         if (VideoFileData) {
             try {
                 await toast.promise(upload(VideoFileData, vttfile), {
 
-                    pending: 'uploading',
-                    success: 'Success 👌',
-                    error: 'something went wrong 🤯'
+                    pending:{
+                        render(){
+                        Setloading(true)
+                        return 'uploading'
+                        }
+                    },
+                    success:{
+                        render(){
+                        Setloading(false)
+                        return 'Success 👌'
+                        }
+                    },
+                    error:{
+                        render(){
+                            Setloading(false)
+                            return 'something went wrong 🤯'
+                        }
+                    }
 
                 })
             } catch (error) {
                 console.log(error)
+                Setloading(false)
             }
         }
         else {
+            console.log("first")
             try {
                 await toast.promise(update(videoUrl, vttfile), {
 
-                    pending: 'updating',
-                    success: 'Successfully updated 👌',
-                    error: 'something went wrong 🤯'
+                    pending:{
+                        render(){
+                        Setloading(true)
+                        return 'updating'
+                        }
+                    },
+                    success:{
+                        render(){
+                        Setloading(false)
+                        return 'Success 👌'
+                        }
+                    },
+                    error:{
+                        render(){
+                            Setloading(false)
+                            return 'something went wrong 🤯'
+                        }
+                    }
 
                 })
             } catch (error) {
                 console.log(error)
+                Setloading(false)
             }
         }
     }
@@ -82,6 +117,8 @@ const Index = () => {
                 </div>
 
             </div>
+            {loading&&<div className='h-full w-full bg-white bg-opacity-25 absolute top-0 '>
+            </div>}
         </>
     )
 }
